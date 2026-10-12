@@ -37,7 +37,8 @@ A token is a password for your account's API quota. Treat it like one:
   setx MICRODRAMALIST_TOKEN mdl_...        # Windows (new terminals)
   ```
 
-  or a `.env` file that your `.gitignore` lists.
+  or a `.env` file that your `.gitignore` lists, loaded with
+  `node --env-file=.env` (Node 20.6+) or your framework.
 - **Never ship it to a browser.** Anything in front-end JavaScript can be
   read by whoever loads the page. Call the data endpoints from your server,
   a build step or a script, and send your pages only the results. The free
