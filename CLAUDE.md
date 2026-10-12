@@ -18,6 +18,10 @@ other repositories' paths, credentials, or notes about how the site is run.
 - No runtime dependencies: `fetch` only. The package supports Node 18+;
   the test suite needs Node 22+ (vitest), so `test/runtime-smoke.mjs`
   covers 18 and 20.
+- The npm package holds only the built SDK and its docs (the owner,
+  2026-10-12): package.json `files` is the allowlist, and
+  scripts/check-package.mjs (`task package:check`, and prepublishOnly)
+  fails on any other file or any credential-shaped string.
 - Every change: `task check` passes, README / docs / CHANGELOG describe it
   in the same commit, and the Python SDK
   (github.com/Senpai-Media/microdramalist-sdk-python) gets the same change.

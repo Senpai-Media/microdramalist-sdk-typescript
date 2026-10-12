@@ -13,6 +13,11 @@ where a show streams, and read the weekly MicroDramaList Top 20.
 - Handles the details: the bearer token, typed errors, rate-limit headers,
   waiting out a `429`, and iterators over paged results.
 
+> **Status (October 2026):** the free endpoints are live; the token
+> endpoints (stats, lists, changes, charts) are rolling out on
+> microdramalist.com and answer 404 until they arrive. Not yet on npm:
+> install from GitHub (below).
+
 Also available: [the Python SDK](https://github.com/Senpai-Media/microdramalist-sdk-python).
 
 ## Install

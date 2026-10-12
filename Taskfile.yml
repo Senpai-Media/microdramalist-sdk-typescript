@@ -48,6 +48,11 @@ tasks:
       - node test/runtime-smoke.mjs
       - for f in examples/*.mjs; do node --check "$f"; done
 
+  package:check:
+    desc: "Build and check the npm package holds only dist/, docs, README, CHANGELOG, LICENSE (no secrets); runs again on npm publish"
+    cmds:
+      - npm run pack:check
+
   smoke:live:
     desc: "Call the live API's free endpoints (and the data ones when MICRODRAMALIST_TOKEN is set)"
     deps: [build]
