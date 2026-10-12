@@ -1,0 +1,9 @@
+# Tool versions for working on this repository (https://mise.jdx.dev).
+#   mise trust && mise install
+# Node is the newest the tests run on; the package itself supports Node 18+
+# (test/runtime-smoke.mjs, run on 18 and 20 in CI).
+
+[tools]
+node = "24.21.0"
+task = "3.54.0"
+prek = "0.5.5"

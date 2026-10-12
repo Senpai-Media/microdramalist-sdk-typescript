@@ -1,0 +1,32 @@
+{
+  "name": "microdramalist",
+  "version": "0.1.0",
+  "description": "TypeScript/JavaScript SDK for the MicroDramaList API: micro drama lookups, search, catalogue stats by genre and platform, and the weekly Top 20.",
+  "keywords": ["microdramalist", "micro drama", "short drama", "reelshort", "dramabox", "api", "sdk"],
+  "homepage": "https://github.com/Senpai-Media/microdramalist-sdk-typescript#readme",
+  "repository": { "type": "git", "url": "git+https://github.com/Senpai-Media/microdramalist-sdk-typescript.git" },
+  "bugs": { "url": "https://github.com/Senpai-Media/microdramalist-sdk-typescript/issues" },
+  "license": "MIT",
+  "author": "Senpai Media",
+  "type": "module",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "README.md", "LICENSE"],
+  "sideEffects": false,
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "typescript": "7.0.2",
+    "vitest": "5.0.3",
+    "yaml": "2.9.1"
+  }
+}

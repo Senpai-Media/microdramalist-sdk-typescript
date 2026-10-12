@@ -1,0 +1,62 @@
+# Taskfile (go-task, https://taskfile.dev): every command this repository
+# is worked with.
+#
+#   task            # list every task
+#   task check      # what CI runs
+
+version: "3"
+
+# The maintainers' shared tasks (commit hooks, and GitLab helpers that do
+# not apply here); optional, so the Taskfile works in any clone.
+includes:
+  shared:
+    taskfile: ../../tools/ci-templates/Taskfile.glab.yml
+    optional: true
+    flatten: true
+
+tasks:
+  default:
+    cmds:
+      - task --list
+
+  install:
+    desc: Install the development dependencies
+    cmds:
+      - npm ci
+
+  build:
+    desc: Compile src/ to dist/ (JavaScript and type declarations)
+    cmds:
+      - npm run build
+
+  test:
+    desc: Run the test suite (offline; a fake fetch answers)
+    cmds:
+      - npm test
+
+  typecheck:
+    desc: Type-check src/, test/ and examples/
+    cmds:
+      - npm run typecheck
+
+  check:
+    desc: Everything CI runs -- typecheck, tests, build, the runtime smoke test and the examples' syntax
+    cmds:
+      - task: typecheck
+      - task: test
+      - task: build
+      - node test/runtime-smoke.mjs
+      - for f in examples/*.mjs; do node --check "$f"; done
+
+  smoke:live:
+    desc: "Call the live API's free endpoints (and the data ones when MICRODRAMALIST_TOKEN is set)"
+    deps: [build]
+    cmds:
+      - node scripts/live-smoke.mjs
+
+  spec:sync:
+    desc: Refresh spec/openapi.yaml from microdramalist.com, then run the tests against it
+    cmds:
+      - curl -fsSL https://microdramalist.com/openapi.yaml -o spec/openapi.yaml
+      - git --no-pager diff --stat -- spec/openapi.yaml
+      - task: test
