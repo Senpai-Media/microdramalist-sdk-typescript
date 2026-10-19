@@ -130,8 +130,9 @@ describe("rate limits", () => {
     "X-RateLimit-Limit": "60",
     "X-RateLimit-Remaining": "59",
     "X-RateLimit-Reset": "1791000000",
-    "X-RateLimit-Daily-Limit": "10000",
-    "X-RateLimit-Daily-Remaining": "9999",
+    "X-RateLimit-Hourly-Limit": "300",
+    "X-RateLimit-Hourly-Remaining": "299",
+    "X-RateLimit-Hourly-Reset": "1791003000",
   };
 
   it("exposes the last answer's headers", async () => {
@@ -143,8 +144,11 @@ describe("rate limits", () => {
       limit: 60,
       remaining: 59,
       reset: 1791000000,
-      dailyLimit: 10000,
-      dailyRemaining: 9999,
+      hourlyLimit: 300,
+      hourlyRemaining: 299,
+      hourlyReset: 1791003000,
+      dailyLimit: null,
+      dailyRemaining: null,
     });
   });
 
@@ -160,16 +164,16 @@ describe("rate limits", () => {
     expect(calls).toHaveLength(2);
   });
 
-  it("throws at once when Retry-After is longer than maxRetryWait (the daily limit)", async () => {
+  it("throws at once when Retry-After is longer than maxRetryWait (the hourly limit)", async () => {
     const { fetch, calls } = fakeFetch({
       status: 429,
-      body: { error: "rate limit exceeded (per day)" },
-      headers: { "Retry-After": "40000", "X-RateLimit-Daily-Remaining": "0" },
+      body: { error: "rate limit exceeded (per hour)" },
+      headers: { "Retry-After": "3000", "X-RateLimit-Hourly-Remaining": "0" },
     });
     const err = await new MicroDramaList({ token: "t", fetch }).listChartWeeks().catch((e) => e);
     expect(err).toBeInstanceOf(RateLimitError);
-    expect(err.retryAfter).toBe(40000);
-    expect(err.rateLimit.dailyRemaining).toBe(0);
+    expect(err.retryAfter).toBe(3000);
+    expect(err.rateLimit.hourlyRemaining).toBe(0);
     expect(calls).toHaveLength(1);
   });
 

@@ -113,16 +113,24 @@ try {
 | `NotFoundError` | 404 | No such drama, or no chart for that week. |
 | `RateLimitError` | 429 | Over a limit; `retryAfter` is the seconds to wait. |
 
-A token allows **60 requests a minute and 10,000 a day** (UTC). The client
-waits out a per-minute `429` and retries (twice by default; set
-`maxRetries` and `maxRetryWait`), but throws at once on the daily limit,
-whose `Retry-After` runs to midnight. `mdl.lastRateLimit` holds the last
-answer's limits:
+A token allows **60 requests a minute and 300 an hour**, with no daily
+limit. The client waits out a per-minute `429` and retries (twice by
+default; set `maxRetries` and `maxRetryWait`), but throws at once on the
+hourly limit, whose `Retry-After` runs to the end of the hour window.
+`mdl.lastRateLimit` holds the last answer's limits:
 
 ```ts
 await mdl.getStatsPlatforms();
-console.log(mdl.lastRateLimit); // { limit: 60, remaining: 59, reset: 1791..., dailyLimit: 10000, dailyRemaining: 9999 }
+console.log(mdl.lastRateLimit); // { limit: 60, remaining: 59, reset: 1791..., hourlyLimit: 300, hourlyRemaining: 299, hourlyReset: 1791..., dailyLimit: null, dailyRemaining: null }
 ```
+
+The free endpoints (no token) allow 30 requests a minute, 150 an hour and
+1,000 a day per address; past the day, the `429` names the free token and
+`Retry-After` runs to 00:00 UTC. The API is for products that use the
+data and credit MicroDramaList: walking every drama to copy the catalogue
+is a breach of its terms and ends in a permanent ban of the token, the
+account and the address (the terms are on
+[microdramalist.com/api-docs](https://microdramalist.com/api-docs)).
 
 ## Options
 

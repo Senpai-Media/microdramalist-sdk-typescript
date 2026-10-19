@@ -318,8 +318,14 @@ export interface RateLimit {
   remaining: number | null;
   /** When the minute window resets, in Unix seconds. */
   reset: number | null;
-  /** Requests allowed per UTC day (token endpoints only). */
+  /** Requests allowed per hour (300 per token, 150 per address on the free endpoints). */
+  hourlyLimit: number | null;
+  /** Requests left in the current hour window. */
+  hourlyRemaining: number | null;
+  /** When the hour window resets, in Unix seconds. */
+  hourlyReset: number | null;
+  /** Requests allowed per UTC day: only on the free endpoints' daily refusal (1,000 per address); a token has no daily limit. */
   dailyLimit: number | null;
-  /** Requests left today (token endpoints only). */
+  /** Requests left today, 0 on that refusal. */
   dailyRemaining: number | null;
 }

@@ -36,7 +36,7 @@ export class NotFoundError extends MicroDramaListError {}
 
 /**
  * 429: over the per-minute or per-day limit. `retryAfter` is the seconds
- * the server asked us to wait (until UTC midnight for the daily limit).
+ * the server asked us to wait (to the window's end for the hourly limit, up to an hour).
  */
 export class RateLimitError extends MicroDramaListError {
   readonly retryAfter: number | null;

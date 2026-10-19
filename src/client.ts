@@ -72,7 +72,7 @@ export interface ClientOptions {
   maxRetries?: number;
   /**
    * The longest Retry-After, in seconds, worth waiting for (default 60).
-   * A longer one -- the daily limit asks to wait until UTC midnight --
+   * A longer one -- the hourly limit asks to wait for the window's end, up to an hour --
    * throws RateLimitError at once instead of sleeping.
    */
   maxRetryWait?: number;
@@ -114,6 +114,9 @@ function readRateLimit(headers: Headers): RateLimit | null {
     limit: intHeader(headers, "X-RateLimit-Limit"),
     remaining: intHeader(headers, "X-RateLimit-Remaining"),
     reset: intHeader(headers, "X-RateLimit-Reset"),
+    hourlyLimit: intHeader(headers, "X-RateLimit-Hourly-Limit"),
+    hourlyRemaining: intHeader(headers, "X-RateLimit-Hourly-Remaining"),
+    hourlyReset: intHeader(headers, "X-RateLimit-Hourly-Reset"),
     dailyLimit: intHeader(headers, "X-RateLimit-Daily-Limit"),
     dailyRemaining: intHeader(headers, "X-RateLimit-Daily-Remaining"),
   };
